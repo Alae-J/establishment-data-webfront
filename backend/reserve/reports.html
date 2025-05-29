@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* Reset default browser styles */
+        body,
+        h1,
+        h2,
+        h3,
+        p,
+        ul,
+        li {
+          margin: 0;
+          padding: 0;
+        }
+  
+        /* Header styles */
+        header {
+          background-color: #333;
+          padding: 20px;
+          color: #fff;
+        }
+  
+        h1 {
+          font-size: 24px;
+          margin-bottom: 10px;
+        }
+  
+        nav ul {
+          list-style: none;
+        }
+  
+        nav ul li {
+          display: inline-block;
+          margin-right: 10px;
+        }
+  
+        nav ul li a {
+          color: #fff;
+          text-decoration: none;
+        }
+  
+        /* Main content styles */
+        main {
+          width: 100%;
+          margin: 20px auto;
+          padding: 20px;
+        }
+  
+        h2 {
+          font-size: 20px;
+          margin-bottom: 10px;
+        }
+  
+        footer {
+          position: fixed; 
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          background-color: #333;
+          padding: 20px;
+          color: #fff;
+          text-align: center;
+        }
+        .dropdown {
+          position: relative;
+          display: inline-block;
+        }
+  
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #333;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          padding: 12px 16px;
+        }
+  
+        .dropdown-content a {
+          color: white;
+        }
+  
+        .dropdown:hover .dropdown-content {
+          display: block;
+          opacity: 1;
+          visibility: visible;
+          top: 100%; /* Move the dropdown content below the element */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+      </style>
+</head>
+<body>
+    <header
+      style="
+        background-color: #333;
+        padding: 20px;
+        color: #fff;
+        position: relative; /* Ensure the header is relatively positioned */
+        z-index: 1;
+      "
+    >
+      <h1>gestion des rapports</h1>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li style="margin-left: 900px"><a href="/logout">Log out</a></li>
+        </ul>
+      </nav>
+    </header>
+    <h1 style="margin: 25px;">Les PDFs inserés</h3>
+
+    <div
+    style="display: flex;">
+      <!-- Embed PDFs -->
+       <div>
+      <h4 style="margin-left: 300px;">PV:</h4>
+      <embed style="margin: 20px;" src="/uploads/{{ id }}/pv.pdf" width="600" height="400" type="application/pdf">
+      </div>
+      <div>
+      <h4 style="margin-left: 300px;">CE:</h4>
+      <embed style="margin: 20px;" src="/uploads/{{ id }}/ce.pdf" width="600" height="400" type="application/pdf">
+      </div>
+  </div>
+  <div style="display: flex;">
+    <div>
+    <h4 style="margin-left: 300px;">DGI:</h4>
+    <embed style="margin: 20px;" src="/uploads/{{ id }}/dgi.pdf" width="600" height="400" type="application/pdf">
+    </div>
+    <div>
+    <h4 style="margin-left: 300px;">Cons:</h4>
+    <embed style="margin: 20px;" src="/uploads/{{ id }}/cons.pdf" width="600" height="400" type="application/pdf">
+    </div>
+  </div>
+<br><br><br>
+  <h1 style="margin-left: 5px;">la matrice</h1>
+  <a style="margin-left: 20px;" href="/update_mtrx_form/{{id}}"><button>mettre à jour la matrice</button></a>  <br><br>
+  <table>
+    <thead>
+        <tr>
+            <th>Constats</th>
+            <th>Recommendations</th>
+            <th>Plan d'Action</th>
+            <th>Intervenant</th>
+            <th>Delai</th>
+            <th>Etat d'Avancement</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in table_data %}
+        <tr>
+            <td>{{ row.constat }}</td>
+            <td>{{ row.recommendation }}</td>
+            <td>{{ row.plan }}</td>
+            <td>{{ row.intervenant }}</td>
+            <td>{{ row.delai }}</td>
+            <td>{{ row.etat }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+    <footer
+      style="
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        position: relative; /* Ensure the footer is relatively positioned */
+        z-index: 1;
+        margin-top: 50px;
+      "
+    >
+      <p style="text-align: center">gestion des rapports</p>
+    </footer>
+    
+</body>
+</html>

@@ -1,13 +1,12 @@
-
-import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Navigate, Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 
 const Login = () => {
   const { user, login } = useAuth();
@@ -17,7 +16,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Redirect if already logged in
+  // Redirection si déjà connecté
   if (user) {
     return <Navigate to="/" replace />;
   }
@@ -31,14 +30,14 @@ const Login = () => {
       const success = await login(email, password);
       if (success) {
         toast({
-          title: "Login successful!",
-          description: "Welcome to Agro Management System",
+          title: "Connexion réussie !",
+          description: "Bienvenue sur la plateforme Agro Management",
         });
       } else {
-        setError('Invalid email or password. Please try again.');
+        setError('Email ou mot de passe invalide. Veuillez réessayer.');
       }
     } catch (error) {
-      setError('An error occurred during login. Please try again.');
+      setError("Une erreur s'est produite lors de la connexion. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
     }
@@ -56,7 +55,7 @@ const Login = () => {
               Agro Management
             </CardTitle>
             <CardDescription className="text-earth-600">
-              Sign in to access your agricultural management dashboard
+              Connectez-vous pour accéder à votre tableau de bord agricole
             </CardDescription>
           </CardHeader>
           
@@ -69,26 +68,26 @@ const Login = () => {
               )}
               
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-earth-700">Email</Label>
+                <Label htmlFor="email" className="text-earth-700">Adresse Email</Label>
                 <Input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder="Entrez votre email"
                   required
                   className="border-earth-200 focus:border-forest-500"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-earth-700">Password</Label>
+                <Label htmlFor="password" className="text-earth-700">Mot de passe</Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  placeholder="Entrez votre mot de passe"
                   required
                   className="border-earth-200 focus:border-forest-500"
                 />
@@ -99,7 +98,7 @@ const Login = () => {
                 className="w-full bg-forest-600 hover:bg-forest-700"
                 disabled={isLoading}
               >
-                {isLoading ? 'Signing in...' : 'Sign In'}
+                {isLoading ? 'Connexion en cours...' : 'Se connecter'}
               </Button>
             </form>
             
@@ -108,7 +107,7 @@ const Login = () => {
                 to="/" 
                 className="text-sm text-earth-600 hover:text-earth-800 transition-colors"
               >
-                ← Back to home
+                ← Retour à l’accueil
               </Link>
             </div>
           </CardContent>

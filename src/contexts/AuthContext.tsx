@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface User {
   name: string;
@@ -36,9 +36,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const checkAuthStatus = async () => {
     try {
       // Try to get current user session
-      const response = await fetch('/api/current-user', {
+      const response = await fetch('/api/check-auth', {
         credentials: 'include'
-      });
+      });      
       
       if (response.ok) {
         const userData = await response.json();

@@ -1,0 +1,168 @@
+/* report_admin.css */
+
+/* 1. Reset & box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Root variables */
+:root {
+  --primary-bg: #333;
+  --primary-fg: #fff;
+  --accent: #007bff;
+  --border-radius: 6px;
+  --gap: 1rem;
+  --max-width: 1000px;
+  --font-sans: system-ui, sans-serif;
+}
+
+/* 3. Base typography */
+body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  color: #222;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 4. Header & nav */
+.site-header {
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+  padding: 0.75rem var(--gap);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-header h1 {
+  font-size: 1.25rem;
+}
+
+.site-nav ul {
+  list-style: none;
+  display: flex;
+  gap: var(--gap);
+}
+
+.site-nav a {
+  color: var(--primary-fg);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius);
+  transition: background 0.2s;
+}
+.site-nav a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+/* 5. Dropdown */
+.dropdown {
+  position: relative;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--primary-bg);
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.dropdown-content a {
+  display: block;
+  color: var(--primary-fg);
+  padding: 0.25rem 0;
+}
+
+/* 6. Main area */
+.admin-report-main {
+  flex: 1;
+  width: 90%;
+  max-width: var(--max-width);
+  margin: var(--gap) auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+/* 7. Upload form */
+.upload-container {
+  background: #fff;
+  padding: var(--gap);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.upload-form input[type="file"] {
+  border: 2px dashed var(--accent);
+  border-radius: var(--border-radius);
+  padding: 0.75rem;
+  background: #f1f7ff;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.upload-form button[type="submit"] {
+  background: var(--accent);
+  color: var(--primary-fg);
+  border: none;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.upload-form button[type="submit"]:hover {
+  background: darken(var(--accent), 10%);
+}
+
+/* 8. PDF grid */
+.pdf-grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+.pdf-grid embed {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+}
+
+/* 9. Empty state */
+.empty-state {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: var(--gap);
+}
+
+/* 10. Footer */
+.site-footer {
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+  text-align: center;
+  padding: var(--gap);
+}

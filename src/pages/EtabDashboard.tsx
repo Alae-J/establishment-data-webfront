@@ -1,10 +1,8 @@
-
-import { useAuth } from '@/contexts/AuthContext';
-import { Navigate, useParams } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/contexts/AuthContext';
+import { Link, Navigate, useParams } from 'react-router-dom';
 
 const EtabDashboard = () => {
   const { user } = useAuth();
@@ -14,7 +12,7 @@ const EtabDashboard = () => {
     return <Navigate to="/" replace />;
   }
 
-  // Extract establishment ID from name (e.g., "etab_9" -> 9)
+  // Extraction de l'ID de l'établissement (ex: "etab_9" -> 9)
   const etabId = name?.replace('etab_', '') || '';
   const years = [2022, 2023, 2024];
 
@@ -25,19 +23,19 @@ const EtabDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8 animate-fade-in">
           <h1 className="text-3xl font-bold text-earth-800 mb-2">
-            Establishment Dashboard - {name?.toUpperCase()}
+            Tableau de Bord - {name?.toUpperCase()}
           </h1>
           <p className="text-earth-600">
-            Welcome, {user.name}. Manage your establishment's data and reports.
+            Bienvenue, {user.name}. Gérez les données et rapports de votre établissement.
           </p>
         </div>
 
-        {/* Quick Actions */}
+        {/* Actions rapides */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           <Card className="border-earth-200 hover:shadow-lg transition-shadow animate-fade-in">
             <CardHeader>
-              <CardTitle className="text-lg text-earth-800">Data Matrix</CardTitle>
-              <CardDescription>View and update your establishment's matrix data</CardDescription>
+              <CardTitle className="text-lg text-earth-800">Matrice de Données</CardTitle>
+              <CardDescription>Consultez et mettez à jour les données matricielles de votre établissement</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -49,7 +47,7 @@ const EtabDashboard = () => {
                     className="w-full border-earth-300 text-earth-700 hover:bg-earth-50"
                   >
                     <Link to={`/etablissement/${etabId}/${year}/matrix`}>
-                      Matrix {year}
+                      Matrice {year}
                     </Link>
                   </Button>
                 ))}
@@ -59,18 +57,18 @@ const EtabDashboard = () => {
 
           <Card className="border-earth-200 hover:shadow-lg transition-shadow animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <CardHeader>
-              <CardTitle className="text-lg text-earth-800">Reports</CardTitle>
-              <CardDescription>Access and upload reports for your establishment</CardDescription>
+              <CardTitle className="text-lg text-earth-800">Rapports</CardTitle>
+              <CardDescription>Accédez aux rapports de votre établissement</CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full bg-forest-600 hover:bg-forest-700">
-                <Link to="/reports">View My Reports</Link>
+                <Link to="/reports">Voir mes rapports</Link>
               </Button>
             </CardContent>
           </Card>
         </div>
 
-        {/* Year Overview Cards */}
+        {/* Cartes par année */}
         <div className="grid md:grid-cols-3 gap-6">
           {years.map((year, index) => (
             <Card 
@@ -80,7 +78,7 @@ const EtabDashboard = () => {
             >
               <CardHeader>
                 <CardTitle className="text-xl text-earth-800">{year}</CardTitle>
-                <CardDescription>View all data for {year}</CardDescription>
+                <CardDescription>Consulter toutes les données de {year}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button 
@@ -90,7 +88,7 @@ const EtabDashboard = () => {
                   className="w-full border-earth-300 text-earth-700 hover:bg-earth-50"
                 >
                   <Link to={`/etablissement/${etabId}/${year}`}>
-                    Overview
+                    Vue d'ensemble
                   </Link>
                 </Button>
                 <Button 
@@ -100,7 +98,7 @@ const EtabDashboard = () => {
                   className="w-full border-forest-300 text-forest-700 hover:bg-forest-50"
                 >
                   <Link to={`/etablissement/${etabId}/${year}/matrix`}>
-                    Matrix Data
+                    Données Matricielles
                   </Link>
                 </Button>
               </CardContent>
@@ -108,29 +106,29 @@ const EtabDashboard = () => {
           ))}
         </div>
 
-        {/* Quick Stats */}
+        {/* Statistiques rapides */}
         <Card className="border-earth-200 mt-8 animate-fade-in" style={{ animationDelay: '0.5s' }}>
           <CardHeader>
-            <CardTitle className="text-xl text-earth-800">Quick Statistics</CardTitle>
-            <CardDescription>Overview of your establishment's data</CardDescription>
+            <CardTitle className="text-xl text-earth-800">Statistiques Rapides</CardTitle>
+            <CardDescription>Vue d'ensemble des données de votre établissement</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div className="p-4 bg-forest-50 rounded-lg">
                 <div className="text-2xl font-bold text-forest-700">{years.length}</div>
-                <div className="text-sm text-forest-600">Active Years</div>
+                <div className="text-sm text-forest-600">Années actives</div>
               </div>
               <div className="p-4 bg-harvest-50 rounded-lg">
                 <div className="text-2xl font-bold text-harvest-700">4</div>
-                <div className="text-sm text-harvest-600">Matrix Rows</div>
+                <div className="text-sm text-harvest-600">Lignes de matrice</div>
               </div>
               <div className="p-4 bg-earth-50 rounded-lg">
                 <div className="text-2xl font-bold text-earth-700">6</div>
-                <div className="text-sm text-earth-600">Matrix Columns</div>
+                <div className="text-sm text-earth-600">Colonnes de matrice</div>
               </div>
               <div className="p-4 bg-forest-50 rounded-lg">
-                <div className="text-2xl font-bold text-forest-700">Multiple</div>
-                <div className="text-sm text-forest-600">Report Types</div>
+                <div className="text-2xl font-bold text-forest-700">Multiples</div>
+                <div className="text-sm text-forest-600">Types de rapports</div>
               </div>
             </div>
           </CardContent>

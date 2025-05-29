@@ -1,10 +1,8 @@
-
-import { useAuth } from '@/contexts/AuthContext';
-import { Navigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/contexts/AuthContext';
+import { Link, Navigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -13,108 +11,115 @@ const AdminDashboard = () => {
     return <Navigate to="/" replace />;
   }
 
-  const establishmentIds = Array.from({ length: 26 }, (_, i) => i + 1);
+  const establishmentKeys = [
+    { key: 'ormvas', label: 'ORMVA' },
+    { key: 'agences', label: 'Agences' },
+    { key: 'offices', label: 'Offices' },
+    { key: 'formation', label: 'Formation' },
+    { key: 'societe-etat', label: 'Sociétés d’État' },
+  ];
+  
   const years = [2022, 2023, 2024];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-earth-50 to-forest-50">
       <Navbar />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8 animate-fade-in">
           <h1 className="text-3xl font-bold text-earth-800 mb-2">
-            Admin Dashboard
+            Tableau de Bord Administrateur
           </h1>
           <p className="text-earth-600">
-            Welcome, {user.name}. Manage all agricultural establishments and reports.
+            Bienvenue, {user.name}. Gérez l’ensemble des établissements agricoles et des rapports.
           </p>
         </div>
 
-        {/* Quick Actions */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        {/* Actions rapides */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
           <Card className="border-earth-200 hover:shadow-lg transition-shadow animate-fade-in">
             <CardHeader>
-              <CardTitle className="text-lg text-earth-800">Establishments</CardTitle>
-              <CardDescription>View and manage all establishments</CardDescription>
+              <CardTitle className="text-lg text-earth-800">Établissements</CardTitle>
+              <CardDescription>Afficher et gérer tous les établissements</CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full bg-forest-600 hover:bg-forest-700">
-                <Link to="/etablissements">View All Establishments</Link>
+                <Link to="/etablissements">Voir tous les établissements</Link>
               </Button>
             </CardContent>
           </Card>
 
-          <Card className="border-earth-200 hover:shadow-lg transition-shadow animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          {/* <Card className="border-earth-200 hover:shadow-lg transition-shadow animate-fade-in" style={{ animationDelay: '0.1s' }}>
             <CardHeader>
-              <CardTitle className="text-lg text-earth-800">Reports Overview</CardTitle>
-              <CardDescription>Access reports across all entities</CardDescription>
+              <CardTitle className="text-lg text-earth-800">Aperçu des Rapports</CardTitle>
+              <CardDescription>Accéder aux rapports de toutes les entités</CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild variant="outline" className="w-full border-earth-300 text-earth-700 hover:bg-earth-50">
-                <Link to="/reports">View Reports</Link>
+                <Link to="/reports">Voir les rapports</Link>
               </Button>
             </CardContent>
-          </Card>
+          </Card> */}
 
           <Card className="border-earth-200 hover:shadow-lg transition-shadow animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <CardHeader>
-              <CardTitle className="text-lg text-earth-800">System Statistics</CardTitle>
-              <CardDescription>View system-wide analytics</CardDescription>
+              <CardTitle className="text-lg text-earth-800">Statistiques Système</CardTitle>
+              <CardDescription>Afficher les analyses globales du système</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2 text-sm text-earth-600">
-                <div>Total Establishments: {establishmentIds.length}</div>
-                <div>Active Years: {years.length}</div>
-                <div>Report Types: Multiple</div>
+                <div>Types d’établissements : {establishmentKeys.length}</div>
+                <div>Années actives : {years.length}</div>
+                <div>Types de rapports : Multiples</div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Establishments Grid */}
+        {/* Grille des établissements */}
         <Card className="border-earth-200 animate-fade-in" style={{ animationDelay: '0.3s' }}>
           <CardHeader>
-            <CardTitle className="text-xl text-earth-800">Quick Access - Establishments</CardTitle>
-            <CardDescription>Click on any establishment to manage its data</CardDescription>
+            <CardTitle className="text-xl text-earth-800">Accès Rapide - Établissements</CardTitle>
+            <CardDescription>Cliquez sur un établissement pour gérer ses données</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-              {establishmentIds.map((id) => (
-                <Button
-                  key={id}
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="border-earth-300 text-earth-700 hover:bg-earth-100"
-                >
-                  <Link to={`/etablissement/etab_${id}`}>
-                    ETAB {id}
-                  </Link>
-                </Button>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+            {establishmentKeys.map(({ key, label }) => (
+              <Button
+                key={key}
+                asChild
+                variant="outline"
+                size="sm"
+                className="border-earth-300 text-earth-700 hover:bg-earth-100"
+              >
+                <Link to={`/etablissement/${key}`}>
+                  {label}
+                </Link>
+              </Button>
+            ))}
+          </div>
           </CardContent>
         </Card>
 
-        {/* Recent Activity */}
+        {/* Activité récente */}
         <Card className="border-earth-200 mt-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
           <CardHeader>
-            <CardTitle className="text-xl text-earth-800">Recent Activity</CardTitle>
-            <CardDescription>Latest updates across the system</CardDescription>
+            <CardTitle className="text-xl text-earth-800">Activité Récente</CardTitle>
+            <CardDescription>Dernières mises à jour dans le système</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-3 text-sm text-earth-600">
               <div className="flex justify-between items-center py-2 border-b border-earth-100">
-                <span>Matrix data updated for ETAB 1 - 2024</span>
-                <span className="text-xs">2 hours ago</span>
+                <span>Matrice mise à jour pour ETAB 1 - 2024</span>
+                <span className="text-xs">il y a 2 heures</span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-earth-100">
-                <span>New report uploaded for ETAB 5 - 2024</span>
-                <span className="text-xs">4 hours ago</span>
+                <span>Nouveau rapport ajouté pour ETAB 5 - 2024</span>
+                <span className="text-xs">il y a 4 heures</span>
               </div>
               <div className="flex justify-between items-center py-2">
-                <span>User login: ETAB 12</span>
-                <span className="text-xs">6 hours ago</span>
+                <span>Connexion utilisateur : ETAB 12</span>
+                <span className="text-xs">il y a 6 heures</span>
               </div>
             </div>
           </CardContent>
