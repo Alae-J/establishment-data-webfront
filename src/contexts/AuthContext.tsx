@@ -1,10 +1,10 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface User {
   name: string;
-  email: string;
   isAdmin: boolean;
+  role: 'admin' | 'establishment';
+  establishmentId?: number;
 }
 
 interface AuthContextType {
@@ -17,34 +17,34 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
-  return context;
+  return ctx;
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check if user is already logged in on app start
   useEffect(() => {
     checkAuthStatus();
   }, []);
 
   const checkAuthStatus = async () => {
     try {
-      // Try to get current user session
-      const response = await fetch('/api/check-auth', {
-        credentials: 'include'
-      });      
-      
-      if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
+      const res = await fetch('/api/check-auth', { credentials: 'include' });
+      if (res.ok) {
+        const data = await res.json();
+        setUser({
+          name: data.name,
+          isAdmin: data.isAdmin,
+          role: data.role,
+          establishmentId: data.establishmentId,
+        });
       }
-    } catch (error) {
+    } catch {
       console.log('No active session');
     } finally {
       setIsLoading(false);
@@ -53,35 +53,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch('/login', {
+      const res = await fetch('/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
-        credentials: 'include'
+        credentials: 'include',
       });
-
-      if (response.ok) {
-        // After successful login, check user status
+      if (res.ok) {
         await checkAuthStatus();
         return true;
       }
       return false;
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch (e) {
+      console.error('Login error:', e);
       return false;
     }
   };
 
   const logout = async () => {
     try {
-      await fetch('/logout', {
-        credentials: 'include'
-      });
+      await fetch('/logout', { credentials: 'include' });
       setUser(null);
-    } catch (error) {
-      console.error('Logout error:', error);
+    } catch (e) {
+      console.error('Logout error:', e);
     }
   };
 

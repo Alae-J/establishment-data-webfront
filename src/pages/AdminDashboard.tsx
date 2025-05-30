@@ -2,24 +2,30 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
+import { useQuery } from "@tanstack/react-query";
 import { Link, Navigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
 
-  if (!user || !user.isAdmin) {
-    return <Navigate to="/" replace />;
-  }
+  const { data: establishmentKeys = [], isLoading: loadingE } = useQuery({
+    queryKey: ["establishments"],
+    queryFn: () =>
+      fetch("/api/establishments", { credentials: "include" })
+        .then((r) => r.json())
+        .then((j) => j.establishments),
+  });
 
-  const establishmentKeys = [
-    { key: 'ormvas', label: 'ORMVA' },
-    { key: 'agences', label: 'Agences' },
-    { key: 'offices', label: 'Offices' },
-    { key: 'formation', label: 'Formation' },
-    { key: 'societe-etat', label: 'Sociétés d’État' },
-  ];
-  
-  const years = [2022, 2023, 2024];
+  const { data: years = [], isLoading: loadingY } = useQuery({
+    queryKey: ["years"],
+    queryFn: () =>
+      fetch("/api/years", { credentials: "include" })
+        .then((r) => r.json())
+        .then((j) => j.years),
+  });
+
+  if (!user?.isAdmin) return <Navigate to="/" replace />;
+  if (loadingE || loadingY) return <p>Chargement…</p>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-earth-50 to-forest-50">
@@ -49,18 +55,6 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          {/* <Card className="border-earth-200 hover:shadow-lg transition-shadow animate-fade-in" style={{ animationDelay: '0.1s' }}>
-            <CardHeader>
-              <CardTitle className="text-lg text-earth-800">Aperçu des Rapports</CardTitle>
-              <CardDescription>Accéder aux rapports de toutes les entités</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild variant="outline" className="w-full border-earth-300 text-earth-700 hover:bg-earth-50">
-                <Link to="/reports">Voir les rapports</Link>
-              </Button>
-            </CardContent>
-          </Card> */}
-
           <Card className="border-earth-200 hover:shadow-lg transition-shadow animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <CardHeader>
               <CardTitle className="text-lg text-earth-800">Statistiques Système</CardTitle>
@@ -83,21 +77,19 @@ const AdminDashboard = () => {
             <CardDescription>Cliquez sur un établissement pour gérer ses données</CardDescription>
           </CardHeader>
           <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-            {establishmentKeys.map(({ key, label }) => (
-              <Button
-                key={key}
-                asChild
-                variant="outline"
-                size="sm"
-                className="border-earth-300 text-earth-700 hover:bg-earth-100"
-              >
-                <Link to={`/etablissement/${key}`}>
-                  {label}
-                </Link>
-              </Button>
-            ))}
-          </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              {establishmentKeys.map(({ key, label }) => (
+                <Button
+                  key={key}
+                  asChild
+                  variant="outline"
+                  size="sm"
+                  className="border-earth-300 text-earth-700 hover:bg-earth-100"
+                >
+                  <Link to={`/etablissement/${key}`}>{label}</Link>
+                </Button>
+              ))}
+            </div>
           </CardContent>
         </Card>
 

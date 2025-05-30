@@ -9,7 +9,9 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     proxy: {
-      "^/(login|logout|api|etablissement|etablissements|uploads|reports)": {
+      // Now proxies login, logout, api, etablissements, etablissement (both /insert and /matrix),
+      // uploads (both numeric-ID and code), reports, and saveFile
+      "^/(login|logout|api|etablissement|etablissements|uploads|reports|saveFile)": {
         target: "http://localhost:5000",
         changeOrigin: true,
         secure: false,
@@ -18,8 +20,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === "development" && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {

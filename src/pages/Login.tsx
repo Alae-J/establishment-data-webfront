@@ -16,9 +16,11 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Redirection si déjà connecté
+  // Redirect immediately if already logged in
   if (user) {
-    return <Navigate to="/" replace />;
+    return user.isAdmin
+      ? <Navigate to="/admin" replace />
+      : <Navigate to={`/etab/${user.establishmentId}`} replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +38,7 @@ const Login = () => {
       } else {
         setError('Email ou mot de passe invalide. Veuillez réessayer.');
       }
-    } catch (error) {
+    } catch {
       setError("Une erreur s'est produite lors de la connexion. Veuillez réessayer.");
     } finally {
       setIsLoading(false);
@@ -73,7 +75,7 @@ const Login = () => {
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   placeholder="Entrez votre email"
                   required
                   className="border-earth-200 focus:border-forest-500"
@@ -86,7 +88,7 @@ const Login = () => {
                   id="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   placeholder="Entrez votre mot de passe"
                   required
                   className="border-earth-200 focus:border-forest-500"
