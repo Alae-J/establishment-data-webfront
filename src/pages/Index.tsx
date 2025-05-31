@@ -1,3 +1,4 @@
+
 import CalendarSection from '@/components/CalendarSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,64 +10,88 @@ const Index = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-earth-50 to-forest-50">
-        <div className="animate-pulse text-earth-600">Chargement...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-forest-50">
+        <div className="animate-pulse text-slate-600">Chargement...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-earth-50 via-forest-50 to-harvest-50 relative overflow-hidden">
-      {/* Background Blobs */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-forest-50 relative overflow-hidden">
+      {/* Subtle Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-10 -right-10 w-96 h-96 bg-forest-200/30 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 -left-20 w-72 h-72 bg-harvest-200/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-10 right-1/4 w-56 h-56 bg-earth-200/25 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-forest-100/40 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 -left-32 w-80 h-80 bg-blue-100/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-1/3 w-64 h-64 bg-slate-100/50 rounded-full blur-3xl"></div>
       </div>
 
       {/* Hero Section */}
       <div className="relative">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-80"
-        style={{
-          backgroundImage: 'url("/businessman-sitting-by-table-cafe.jpg")'
-        }}
-      ></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url("/businessman-sitting-by-table-cafe.jpg")',
+            backgroundPosition: 'center',
+            filter: 'brightness(0.7) contrast(1.1)'
+          }}
+        />
+        
+        {/* Institutional Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-blue-900/50 to-forest-900/40" />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
           <div className="text-center animate-fade-in">
-            <h1 className="text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-earth-800 via-forest-700 to-harvest-600 mb-4 leading-tight">
-              Système de Gestion
-            </h1>
-            <h2 className="text-4xl md:text-5xl font-semibold text-earth-700 mb-6">
-              Agricole
-            </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-forest-500 to-harvest-500 mx-auto rounded-full"></div>
+            {/* Main Title - Bold and Institutional */}
+            <div className="mb-6">
+              <h1 className="text-7xl md:text-8xl font-bold text-white mb-2 leading-none tracking-tight">
+                <span className="bg-gradient-to-r from-white via-blue-100 to-forest-100 bg-clip-text text-transparent">
+                  CapGouv
+                </span>
+              </h1>
+              
+              {/* Subtitle - Softer but clear */}
+              <h2 className="text-2xl md:text-3xl font-medium text-blue-100/90 mb-8 tracking-wide">
+                Cap vers la bonne Gouvernance publique
+              </h2>
+            </div>
 
-            <p className="text-xl md:text-2xl text-earth-600 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-              Plateforme complète de gestion des établissements agricoles pour suivre, 
-              analyser et organiser les données à travers toutes vos entités.
-            </p>
+            {/* Decorative Line */}
+            <div className="w-24 h-1 bg-gradient-to-r from-forest-400 to-blue-400 mx-auto rounded-full mb-10" />
 
+            {/* Description with highlighted key phrase */}
+            <div className="max-w-5xl mx-auto mb-12">
+              <p className="text-lg md:text-xl text-white/90 leading-relaxed font-light">
+                <span className="inline-block px-4 py-1 bg-forest-500/20 text-forest-200 font-semibold rounded-lg border border-forest-300/30 backdrop-blur-sm mb-3">
+                  Plateforme gouvernementale de référence
+                </span>
+                <br />
+                dédiée à l'accompagnement des établissements publics sous tutelle du département de l'agriculture 
+                pour la mise à niveau progressive des bonnes pratiques de gouvernance institutionnelle.
+              </p>
+            </div>
+
+            {/* Call-to-Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Button 
                 asChild 
                 size="lg" 
-                className="bg-gradient-to-r from-forest-600 to-forest-700 hover:from-forest-700 hover:to-forest-800 text-white px-8 py-4 text-lg font-semibold shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                className="bg-forest-600 hover:bg-forest-700 text-white px-10 py-4 text-lg font-semibold shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 border border-forest-500"
               >
                 <Link to="/formlogin">
                   Accéder au système
-                  <span className="ml-2">→</span>
+                  <span className="ml-3">→</span>
                 </Link>
               </Button>
+              
               <Button 
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="border-2 border-earth-300 text-earth-700 hover:bg-earth-50 px-8 py-4 text-lg font-semibold backdrop-blur-sm bg-white/60 hover:bg-white/80 transition-all duration-300 hover:shadow-lg"
+                className="border-2 border-white/60 text-white hover:bg-white/10 hover:border-white/80 px-10 py-4 text-lg font-semibold bg-white/10 backdrop-blur-md transition-all duration-300 hover:shadow-xl"
               >
                 <Link to="/etablissements">
-                  Voir les établissements
-                  <span className="ml-2">🌱</span>
+                  Explorer les établissements
+                  <span className="ml-3">🏛️</span>
                 </Link>
               </Button>
             </div>
@@ -74,74 +99,81 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Fonctionnalités + Calendrier */}
+      {/* Features Section */}
       <div className="relative">
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-5"
-          style={{
-            backgroundImage: 'url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")'
-          }}
-        ></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="text-center mb-16">
+            <h3 className="text-3xl font-bold text-slate-800 mb-4">
+              Solutions intégrées de gouvernance
+            </h3>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+              Des outils modernes et sécurisés pour accompagner la transformation digitale 
+              de vos pratiques administratives et organisationnelles.
+            </p>
+          </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid md:grid-cols-3 gap-8 mb-20">
             {[
               {
                 color: 'forest',
                 title: 'Gestion des Matrices',
-                text: 'Suivez et gérez les matrices de données complètes de vos établissements avec mises à jour en temps réel et validations intégrées.'
+                text: 'Suivez et gérez les matrices de données complètes de vos établissements avec mises à jour en temps réel et validations intégrées.',
+                icon: '📊'
               },
               {
-                color: 'harvest',
+                color: 'blue',
                 title: 'Gestion des Rapports',
-                text: 'Téléversez, organisez et consultez les rapports PDF avec contrôle de version et sécurité documentaire.'
+                text: 'Téléversez, organisez et consultez les rapports PDF avec contrôle de version et sécurité documentaire.',
+                icon: '📋'
               },
               {
-                color: 'earth',
+                color: 'slate',
                 title: 'Support Multi-Entités',
-                text: 'Prise en charge de multiples établissements agricoles avec accès basé sur les rôles et tableaux de bord personnalisés.'
+                text: 'Prise en charge de multiples établissements agricoles avec accès basé sur les rôles et tableaux de bord personnalisés.',
+                icon: '🏛️'
               }
             ].map((feature, i) => (
               <Card
                 key={feature.title}
-                className={`border-earth-200 hover:shadow-2xl transition-all duration-500 animate-fade-in group bg-white/90 backdrop-blur-sm hover:bg-white/95`}
-                style={{ animationDelay: `${i * 0.2}s` }}
+                className="border-slate-200 hover:shadow-2xl transition-all duration-500 animate-fade-in group bg-white/95 backdrop-blur-sm hover:bg-white"
+                style={{ animationDelay: `${i * 0.15}s` }}
               >
                 <CardContent className="p-8 text-center">
-                  <div className={`w-16 h-16 bg-${feature.color}-100 to-${feature.color}-200 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                    <div className={`w-8 h-8 bg-gradient-to-br from-${feature.color}-600 to-${feature.color}-700 rounded-lg shadow-md`}></div>
+                  <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                    {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-earth-800 mb-4 group-hover:text-forest-700 transition-colors">
+                  <h4 className="text-xl font-bold text-slate-800 mb-4 group-hover:text-forest-700 transition-colors">
                     {feature.title}
-                  </h3>
-                  <p className="text-earth-600 leading-relaxed">{feature.text}</p>
+                  </h4>
+                  <p className="text-slate-600 leading-relaxed">{feature.text}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          {/* Calendrier */}
-          <div className="animate-fade-in bg-white/70 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20" style={{ animationDelay: '0.6s' }}>
+          {/* Calendar Section */}
+          <div className="animate-fade-in bg-white/80 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/40" style={{ animationDelay: '0.6s' }}>
             <CalendarSection />
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="relative border-t border-earth-200/50 bg-gradient-to-r from-white/80 to-earth-50/80 backdrop-blur-sm">
+      <footer className="relative border-t border-slate-200/60 bg-gradient-to-r from-white/90 to-slate-50/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <div className="mb-4">
-              <div className="w-24 h-1 bg-gradient-to-r from-forest-500 to-harvest-500 mx-auto rounded-full mb-4"></div>
-              <h3 className="text-lg font-semibold text-earth-700 mb-2">Système de Gestion Agricole</h3>
+            <div className="mb-6">
+              <div className="w-32 h-1 bg-gradient-to-r from-forest-500 to-blue-500 mx-auto rounded-full mb-4" />
+              <h4 className="text-lg font-semibold text-slate-700 mb-2">CapGouv</h4>
+              <p className="text-sm text-slate-500">Cap vers la bonne Gouvernance publique</p>
             </div>
-            <p className="text-earth-600 text-sm">
-              &copy; 2024 Système de Gestion Agricole. Tous droits réservés.
+            <p className="text-slate-600 text-sm mb-4">
+              &copy; 2025 CapGouv - Département de l'Agriculture. Tous droits réservés.
             </p>
-            <div className="mt-4 flex justify-center space-x-6">
-              <div className="w-2 h-2 bg-forest-400 rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-harvest-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-              <div className="w-2 h-2 bg-earth-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="flex justify-center space-x-4">
+              <div className="w-2 h-2 bg-forest-400 rounded-full animate-pulse" />
+              <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
+              <div className="w-2 h-2 bg-slate-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
             </div>
           </div>
         </div>
