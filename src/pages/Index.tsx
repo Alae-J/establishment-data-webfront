@@ -43,21 +43,37 @@ const Index = () => {
           {/* Ministry Logo Badge - Positioned at top */}
           <div className="text-center mb-8 animate-fade-in">
             <div className="inline-flex items-center justify-center bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-white/20 mb-8">
-              <div className="flex flex-col items-center space-y-3">
+              <div className="flex flex-col items-center space-y-4">
+                {/* Top Text */}
+                <div className="text-center">
+                  <p className="text-sm md:text-base font-bold text-slate-800 leading-tight">
+                    المملكة المغربية
+                  </p>
+                  <p className="text-sm md:text-base font-semibold text-slate-800 leading-tight">
+                    Royaume du Maroc
+                  </p>
+                </div>
+                
+                {/* Logo */}
                 <img 
-                  src="/lovable-uploads/46726841-3e64-43af-b036-a36c371e7ea7.png" 
-                  alt="Ministère de l'Agriculture, de la Pêche Maritime, du Développement Rural et des Eaux et Forêts - Royaume du Maroc"
-                  className="h-20 md:h-24 w-auto object-contain"
+                  src="/lovable-uploads/800181d5-02ea-4b49-9871-f3e17fb4ec9d.png" 
+                  alt="Armoiries du Royaume du Maroc"
+                  className="h-24 md:h-28 w-auto object-contain"
                 />
+                
+                {/* Bottom Text */}
                 <div className="text-center">
                   <p className="text-sm md:text-base font-semibold text-slate-800 leading-tight">
+                    وزارة الفلاحة والصيد البحري
+                  </p>
+                  <p className="text-sm md:text-base font-semibold text-slate-800 leading-tight">
+                    والتنمية القروية والمياه والغابات
+                  </p>
+                  <p className="text-xs md:text-sm text-slate-600 mt-2 font-medium">
                     Ministère de l'Agriculture, de la Pêche Maritime,
                   </p>
-                  <p className="text-sm md:text-base font-semibold text-slate-800">
+                  <p className="text-xs md:text-sm text-slate-600 font-medium">
                     du Développement Rural et des Eaux et Forêts
-                  </p>
-                  <p className="text-xs md:text-sm text-slate-600 mt-1 font-medium">
-                    Royaume du Maroc
                   </p>
                 </div>
               </div>
