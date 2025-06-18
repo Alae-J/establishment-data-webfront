@@ -12,8 +12,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import CellEditor from '@/components/CellEditor';
 import MatrixCell from '@/components/MatrixCell';
+import CellEditor from '@/components/CellEditor';
 
 interface MatrixData {
   AE: string[];
@@ -30,11 +30,6 @@ interface MatrixResponse {
   rows: string[];
 }
 
-interface EditingCell {
-  row: keyof MatrixData;
-  colIndex: number;
-}
-
 const ROWS = ['AE', 'CE', 'IGF', 'CC'] as const;
 const COLUMNS = ['IC', 'OB', 'REC', 'CA', 'DD', 'DA'] as const;
 
@@ -43,7 +38,7 @@ export default function Matrix() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // état local
+  // État local
   const [matrixData, setMatrixData] = useState<MatrixData>({
     AE: ['', '', '', '', '', ''],
     CE: ['', '', '', '', '', ''],
@@ -51,7 +46,11 @@ export default function Matrix() {
     CC: ['', '', '', '', '', ''],
   });
   const [isSaving, setIsSaving] = useState(false);
-  const [editingCell, setEditingCell] = useState<EditingCell | null>(null);
+  const [editingCell, setEditingCell] = useState<{
+    row: keyof MatrixData;
+    colIndex: number;
+    value: string;
+  } | null>(null);
 
   const rowLabels: Record<typeof ROWS[number], string> = {
     AE: "Autorisations d'Engagement",
@@ -59,6 +58,7 @@ export default function Matrix() {
     IGF: 'Inspection Générale des Finances',
     CC: 'Cour des Comptes',
   };
+  
   const columnLabels: Record<typeof COLUMNS[number], string> = {
     IC: 'Investissement Capital',
     OB: 'Objectifs Budgétaires',
@@ -68,7 +68,7 @@ export default function Matrix() {
     DA: 'Dotations aux Amortissements',
   };
 
-  // 1) Chargement des données
+  // Chargement des données
   const { data, isLoading, isError } = useQuery<MatrixResponse, Error>({
     queryKey: ['matrix', id, year],
     queryFn: async () => {
@@ -89,7 +89,7 @@ export default function Matrix() {
     }
   }, [data]);
 
-  // 2) Enregistrement
+  // Enregistrement
   const handleSave = async () => {
     setIsSaving(true);
     try {
@@ -99,7 +99,7 @@ export default function Matrix() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(matrixData),
       });
-      if (!res.ok) throw new Error('Échec de l'enregistrement');
+      if (!res.ok) throw new Error('Échec de l\'enregistrement');
       toast({ title: 'Succès', description: 'Données enregistrées' });
       queryClient.invalidateQueries({
         queryKey: ['matrix', id, year]
@@ -107,7 +107,7 @@ export default function Matrix() {
     } catch {
       toast({
         title: 'Erreur',
-        description: 'Échec de l'enregistrement',
+        description: 'Échec de l\'enregistrement',
         variant: 'destructive',
       });
     } finally {
@@ -115,23 +115,31 @@ export default function Matrix() {
     }
   };
 
-  const handleCellClick = (row: keyof MatrixData, colIndex: number) => {
-    setEditingCell({ row, colIndex });
-  };
-
-  const handleCellSave = (value: string) => {
-    if (!editingCell) return;
-    
+  const handleCellChange = (
+    row: keyof MatrixData,
+    colIndex: number,
+    value: string
+  ) => {
     setMatrixData(prev => ({
       ...prev,
-      [editingCell.row]: prev[editingCell.row].map((cell, idx) =>
-        idx === editingCell.colIndex ? value : cell
+      [row]: prev[row].map((cell, idx) =>
+        idx === colIndex ? value : cell
       ),
     }));
   };
 
-  const handleCloseEditor = () => {
-    setEditingCell(null);
+  const handleCellClick = (row: keyof MatrixData, colIndex: number) => {
+    setEditingCell({
+      row,
+      colIndex,
+      value: matrixData[row][colIndex] || ''
+    });
+  };
+
+  const handleCellSave = (value: string) => {
+    if (editingCell) {
+      handleCellChange(editingCell.row, editingCell.colIndex, value);
+    }
   };
 
   if (isLoading) {
@@ -163,7 +171,7 @@ export default function Matrix() {
             Matrice de données – ETAB {id} ({year})
           </h1>
           <p className="text-earth-600">
-            Cliquez sur une cellule pour l'éditer. Les textes longs sont automatiquement tronqués.
+            Modifiez et enregistrez les données matricielles ci-dessous.
           </p>
         </div>
 
@@ -171,38 +179,32 @@ export default function Matrix() {
         <Card className="border-earth-200 mb-8 animate-fade-in">
           <CardHeader>
             <CardTitle className="text-xl text-earth-800">
-              Matrice de données Excel-like
+              Saisie des données matricielles
             </CardTitle>
             <CardDescription>
-              Cliquez sur n'importe quelle cellule pour ouvrir l'éditeur de texte.
+              Cliquez sur une cellule pour l'éditer dans une fenêtre dédiée.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
+              <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className="border bg-gradient-to-r from-earth-100 to-earth-200 p-3 text-left font-bold text-earth-800">
-                      Catégorie
-                    </th>
+                    <th className="border bg-earth-100 p-2 text-left min-w-[160px]">Catégorie</th>
                     {COLUMNS.map(col => (
-                      <th key={col} className="border bg-gradient-to-r from-earth-100 to-earth-200 p-3 text-center font-bold text-earth-800 min-w-[120px]">
-                        <div className="font-bold text-sm">{col}</div>
-                        <div className="text-xs font-normal text-earth-600 mt-1">
-                          {columnLabels[col]}
-                        </div>
+                      <th key={col} className="border bg-earth-100 p-2 text-center min-w-[120px]">
+                        <div className="font-bold">{col}</div>
+                        <div className="text-xs text-earth-600">{columnLabels[col]}</div>
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {ROWS.map((row, rIdx) => (
-                    <tr key={row} className="hover:bg-earth-25">
-                      <td className="border bg-gradient-to-r from-forest-50 to-forest-100 p-3">
-                        <div className="font-semibold text-forest-800">{row}</div>
-                        <div className="text-xs text-forest-600 mt-1">
-                          {rowLabels[row]}
-                        </div>
+                  {ROWS.map((row) => (
+                    <tr key={row}>
+                      <td className="border bg-forest-50 p-2">
+                        <div className="font-semibold">{row}</div>
+                        <div className="text-xs text-earth-600">{rowLabels[row]}</div>
                       </td>
                       {COLUMNS.map((col, cIdx) => (
                         <td key={col} className="border p-0">
@@ -222,53 +224,55 @@ export default function Matrix() {
                 <Link to={`/etablissement/${id}/${year}`}>← Retour</Link>
               </Button>
               <Button onClick={handleSave} disabled={isSaving}>
-                {isSaving ? 'Enregistrement…' : 'Enregistrer les modifications'}
+                {isSaving ? 'Enregistrement…' : 'Enregistrer'}
               </Button>
             </div>
           </CardContent>
         </Card>
 
+        {/* Cell Editor Modal */}
+        <CellEditor
+          isOpen={!!editingCell}
+          onClose={() => setEditingCell(null)}
+          value={editingCell?.value || ''}
+          onSave={handleCellSave}
+          cellLabel={editingCell ? `${editingCell.row}${editingCell.colIndex + 1}` : ''}
+          rowLabel={editingCell ? rowLabels[editingCell.row] : ''}
+          columnLabel={editingCell ? columnLabels[COLUMNS[editingCell.colIndex]] : ''}
+        />
+
         {/* Légende */}
         <Card className="border-earth-200 mt-6 animate-fade-in" style={{ animationDelay: '0.4s' }}>
           <CardHeader>
-            <CardTitle className="text-lg text-earth-800">Guide d'utilisation</CardTitle>
+            <CardTitle className="text-lg text-earth-800">Informations Matrice</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6 text-sm">
               <div>
-                <h4 className="font-semibold text-earth-800 mb-2">Instructions</h4>
-                <ul className="space-y-2 text-earth-600">
-                  <li>• Cliquez sur une cellule pour l'éditer</li>
-                  <li>• Les textes longs sont tronqués avec "..."</li>
-                  <li>• L'éditeur s'ouvre dans une fenêtre modale</li>
-                  <li>• Utilisez Échap pour annuler</li>
-                </ul>
+                <h4 className="font-semibold text-earth-800 mb-2">Catégories de ligne</h4>
+                <div className="space-y-1">
+                  {ROWS.map(row => (
+                    <div key={row} className="flex justify-between">
+                      <span className="font-mono text-earth-600">{row}:</span>
+                      <span className="text-earth-700">{rowLabels[row]}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div>
-                <h4 className="font-semibold text-earth-800 mb-2">Raccourcis</h4>
-                <ul className="space-y-2 text-earth-600">
-                  <li>• Ctrl+S : Enregistrer les modifications</li>
-                  <li>• Échap : Fermer l'éditeur</li>
-                  <li>• Tab : Navigation entre cellules</li>
-                  <li>• Entrée : Valider la saisie</li>
-                </ul>
+                <h4 className="font-semibold text-earth-800 mb-2">Indicateurs de colonne</h4>
+                <div className="space-y-1">
+                  {COLUMNS.map(col => (
+                    <div key={col} className="flex justify-between">
+                      <span className="font-mono text-earth-600">{col}:</span>
+                      <span className="text-earth-700">{columnLabels[col]}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
-
-        {/* Cell Editor Modal */}
-        {editingCell && (
-          <CellEditor
-            isOpen={true}
-            onClose={handleCloseEditor}
-            value={matrixData[editingCell.row][editingCell.colIndex] || ''}
-            onSave={handleCellSave}
-            cellLabel={`${editingCell.row}-${COLUMNS[editingCell.colIndex]}`}
-            rowLabel={rowLabels[editingCell.row]}
-            columnLabel={columnLabels[COLUMNS[editingCell.colIndex]]}
-          />
-        )}
       </div>
     </div>
   );

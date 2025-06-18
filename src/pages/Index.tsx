@@ -40,7 +40,31 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900/60 via-blue-900/50 to-forest-900/40" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
-          <div className="text-center animate-fade-in">
+          {/* Ministry Logo Badge - Positioned at top */}
+          <div className="text-center mb-8 animate-fade-in">
+            <div className="inline-flex items-center justify-center bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl border border-white/20 mb-8">
+              <div className="flex flex-col items-center space-y-3">
+                <img 
+                  src="/lovable-uploads/46726841-3e64-43af-b036-a36c371e7ea7.png" 
+                  alt="Ministère de l'Agriculture, de la Pêche Maritime, du Développement Rural et des Eaux et Forêts - Royaume du Maroc"
+                  className="h-20 md:h-24 w-auto object-contain"
+                />
+                <div className="text-center">
+                  <p className="text-sm md:text-base font-semibold text-slate-800 leading-tight">
+                    Ministère de l'Agriculture, de la Pêche Maritime,
+                  </p>
+                  <p className="text-sm md:text-base font-semibold text-slate-800">
+                    du Développement Rural et des Eaux et Forêts
+                  </p>
+                  <p className="text-xs md:text-sm text-slate-600 mt-1 font-medium">
+                    Royaume du Maroc
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center animate-fade-in" style={{ animationDelay: '0.2s' }}>
             {/* Main Title - Bold and Institutional */}
             <div className="mb-6">
               <h1 className="text-7xl md:text-8xl font-bold text-white mb-2 leading-none tracking-tight">
